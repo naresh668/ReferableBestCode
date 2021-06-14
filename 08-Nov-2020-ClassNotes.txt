@@ -1,0 +1,111 @@
+Yesterday's session : Rest api unit testing using Mock objs
+------------------------------------------------------------
+
+-> As part of unit testing we used below annotations
+
+	a) @WebMvcTest
+	b) @Autowired
+	c) @MockBean
+	d) @Test
+
+
+-> To define mock behaviour for a method we used 
+
+		when(T call).thenReturn(Obj)
+
+-> Assert methods we are using to compare expected result with    actual result
+
+----------------------------------------------------------------
+public class SSNEnrollmentController {
+
+	@Autowired
+	private SSNEnrollmentService service;
+
+	@Autowired
+	private AppProperties props;
+
+	private static final Logger logger = LoggerFactory.getLogger(SSNEnrollmentController.class);
+
+	@PostMapping(value = "/enrollment", consumes = { "application/json" })
+	public ResponseEntity<String> ssnEntrollment(@RequestBody SSNEnrollRequest req) {
+		
+		logger.info("Enrollment restController method execution started ");
+
+		String ssnNo = service.ssnEnrollment(req);
+		String succMsg = props.getMessages().get(AppConstants.ENROLLMENT_SUCC) + ssnNo;
+
+		logger.info("Enrollment restcontoller method execution Completed");
+
+		return new ResponseEntity<String>(succMsg, HttpStatus.CREATED);
+	}
+
+}
+-----------------------------------------------------------------------------------------------
+@WebMvcTest(value = SSNEnrollmentController.class)
+public class SsnEnrollmentRestControllerTest {
+
+	@MockBean
+	private SSNEnrollmentService service;
+
+	@MockBean
+	private AppProperties props;
+
+	@Autowired
+	private MockMvc mvc;
+
+	@Test
+	public void ssnEntrollmentTest() throws Exception {
+		
+		Map<String, String> map = new HashMap<>();
+		map.put(AppConstants.ENROLLMENT_SUCC, "Enrollment Success");
+
+		SSNEnrollRequest req = new SSNEnrollRequest();
+		req.setFirstName("test1");
+		req.setLastName("test2");
+		req.setDob(new Date());
+		req.setGender("Male");
+		req.setStateName("RI");
+
+		when(service.ssnEnrollment(req)).thenReturn("686866866");
+		when(props.getMessages()).thenReturn(map);
+
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String reqJson = mapper.writeValueAsString(req);
+		
+		MockHttpServletRequestBuilder reqBuilder = MockMvcRequestBuilders.post("/enrollment")
+							  						.contentType(MediaType.APPLICATION_JSON)
+							  						.content(reqJson);
+		
+		MvcResult mvcResult = mvc.perform(reqBuilder).andReturn();
+		
+		MockHttpServletResponse response = mvcResult.getResponse();
+		
+		assertEquals(201, response.getStatus());
+	}
+}
+
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,146 @@
+Yesterday's session : Jacocco For Code Coverage
+-----------------------------------------------------
+
+Unit Testing for Spring Boot Application
+----------------------------------------------------------
+-> Spring Boot having in built support for Unit Testing
+
+-> Test Framework is already part of Spring Framework.
+------------------------------------------------------------------------
+
+@RunWith(SpringRunner.class) : To prepare test environment for junits
+
+@WebMvcTest(value=Clazz) : To represent target class
+
+@Autowired
+MockMvc mvc : To send requests to controller or rest controller for testing
+
+@MockBean : To create Mock Objects
+
+--------------------------------------------------------------------
+public interface UserDao {
+	public String findNameById(Integer userId);
+}
+---------------------------------------------------------------------
+@Service
+public class UserService {
+
+	@Autowired
+	private UserDao userDao;
+
+	public String getUserName(Integer userId) {
+		String name = userDao.findNameById(userId);
+		return name;
+	}
+}
+---------------------------------------------------------------------
+@WebMvcTest(value = UserService.class)
+public class UserServiceTest {
+
+	@MockBean
+	private UserDao dao;
+
+	@InjectMocks
+	private UserService service;
+
+	@Test
+	public void test_getName() {
+		when(dao.findNameById(101)).thenReturn("Ashok");
+		String userName = service.getUserName(101);
+		assertEquals("Ashok", userName);
+	}
+}
+----------------------------------------------------------------------
+@RestController
+public class WelcomeRestController {
+
+	@GetMapping("/welcome")
+	public String getWelcomeMsg() {
+		String msg = "Welcome To Ashok IT...!!";
+		return msg;
+	}
+}
+--------------------------------------------------------------------
+@WebMvcTest(value = WelcomeRestController.class)
+public class WelcomeRestControllerTest {
+
+	@Autowired
+	private MockMvc mvc;
+
+	@Test
+	public void test_WelcomeMsg() throws Exception {
+		MockHttpServletRequestBuilder reqBuilder = MockMvcRequestBuilders.get("/welcome");
+		MvcResult mvcResult = mvc.perform(reqBuilder).andReturn();
+		MockHttpServletResponse response = mvcResult.getResponse();
+		int status = response.getStatus();
+		assertEquals(200, status);
+	}
+
+}
+------------------------------------------------------------------------
+
+
+
+
+Part-1 : Software Industry Terminology (Completed)
+
+Part-2 : Tools
+
+1)Debugging
+2)Maven
+3)Git Hub
+4)BitBucket
+5)Log4J
+6)Agile
+7)JIRA
+8)SonarQube
+9)Junit
+10)Mocking
+11)Jacocco
+12)Jenkins
+13)SVN
+
+Part-3 :
+-------
+01) 01-Mini Project (Curd Operations)
+
+=================================================================================
+User Management App ===> 02-Mini Project
+----------------------------------------
+Spring Boot
+Data JPA
+Spring Web MVC
+Oracle DB
+JQuery
+AJAX
+-----------------------------------------------------
+1) User Registration Process
+	- Form Validations
+	- Dependent Dropdowns Using Ajax
+	- Unique Mail Validation
+	- Password Encryption
+	- Email Sending
+
+2) Unlock Account
+3) Login & Logout
+4) Forgot Password
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

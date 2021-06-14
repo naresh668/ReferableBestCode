@@ -1,0 +1,166 @@
+
+Today's topic : Unit Testing using JUnit
+-----------------------------------------
+
+What is Software Testing?
+What is Unit Testing?
+Why we need to perform Unit Testing?
+What is Junit?
+Working with Junit
+What is Mocking
+Working with Mocking
+Code Coverage using Jacoco
+
+What is Software Testing?
+------------------------
+It is the process of verifying and validating application functionality with client requirements
+
+-> Software Testing will happen in multiple stages. They are
+
+	1) Unit Testing
+	2) System Integration Testing (SIT)
+	3) User Acceptance Testing (UAT)
+	4) Pilot Testing
+	5) Performance Testing
+	
+
+Unit Testing
+------------
+Testing unit amount of work is called as Unit Testing
+
+Unit Testing will done by developers
+
+Developers will use JUnit to perform unit testing
+
+Unit Testing will help us in improving code quality
+
+Using this unit testing we can provide bug free code for SIT
+
+Once our Unit Testing is completed our code will be tested by Testing Team.
+
+System Integration Testing
+---------------------------
+-> SIT will be performed by Testing team
+
+-> If any functionality is not working in SIT, testers will raise defects or bugs using JIRA
+
+-> Developers has to fix the bugs identified in SIT.
+
+-> If all the functionalities are working as per client requirements then Test Manager will certify our project.
+
+-> Once project is SIT ceritifed it will go to UAT
+
+User Acceptance Testing
+-----------------------
+-> UAT will be performed by Client Side Testing Team.
+
+-> If any bug identified in UAT, they will report in JIRA
+
+-> Developers has to fix bugs identified in UAT
+
+-> If all the functionalities are working in UAT then client will accept for production release.
+
+-> If we get so many defects in UAT, then client will say No Go (Prod Deployment will be stopped).
+
+
+Note: For majority of the project, UAT will happen in different company
+
+	Development(Deloitte) ----------- UAT (KPMG)
+
+
+Performance Testing
+-------------------
+It is the process of testing application response time
+
+
+Pilot Testing
+-------------
+Here Application will be tested with live data
+
+
+*** After Pilot Testing is completed, project will go to Production***
+
+-> After application deployed to production, some issues may occur.
+
+-> To fix production issues , M & O team will be available
+
+-> M & O means Maintence & Opertions
+
+
+
+What is Junit
+-------------
+-> JUnit is an open source framework
+
+-> JUnit is used to implement Unit Testing For Java Projects
+
+
+----------------------------------------------------------------
+<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+------------------------------------------------------------
+package com.ashokit;
+
+public class Calculator {
+
+	public Integer add(Integer a, Integer b) {
+		Integer sum = a + b;
+		return sum;
+	}
+
+	public Integer mul(Integer a, Integer b) {
+		return a * b;
+	}
+
+}
+-------------------------------------------------------
+package com.ashokit;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+public class CalculatorTest {
+
+	@Test
+	public void test_add() {
+		Calculator c = new Calculator();
+		Integer actual = c.add(10, 20);
+		Integer expected = 30;
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void test_mul() {
+		Calculator c = new Calculator();
+		Integer actual = c.mul(2, 5);
+		Integer expected  = 10;
+		assertEquals(expected, actual);
+	}
+}
+-------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

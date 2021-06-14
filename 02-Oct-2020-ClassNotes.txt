@@ -1,0 +1,198 @@
+Yesterday's session : Mocking Introduction
+------------------------------------------
+Today's session : Mocking Example
+----------------------------------------------
+-> Mocking is the process of creating alternate/substitute object for real object
+
+-> Mock objects are used to perform unit testing
+
+-> Mock objects are dummy objects. We will decide behaviour for mock objects
+
+-> To create Mock objects we have mocking frameworks
+
+-> Mocking frameworks are divided into 2 types
+
+	1) Proxy Based Mocking (Easy Mock & Mockito)
+
+	2) Bytecode Manipulation based mocking (Power Mock & JMockit)
+
+Comparision
+-------------
+-> Final classes , final methods & static methods can't be mocked using Proxy Based Mocking.
+
+-> The drawbacks of proxy based mocking is resolved in Bytecode manipulation based mocking
+
+
+Steps to develop Junit with Power Mock Application
+---------------------------------------------------
+1) Create Standalone maven application
+
+2) Add below dependencies in project pom.xml
+
+	1) Junit
+	2) PowerMock
+
+3) Create Dao interface with required methods
+
+4) Create Service class with required methods (it will access dao methods)
+
+5) Create Unit test class using Junit & Power Mock (src/test/java)
+
+6) Run Unit test cases using maven test goal
+
+
+------------------------------------------------------------------------
+<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+------------------------------------------------------------------------
+package com.ashokit.dao;
+
+public interface UserDao {
+
+	public String findNameById(Integer id);
+
+	public String findEmailById(Integer id);
+}
+---------------------------------------------------------------------
+package com.ashokit.service;
+
+import com.ashokit.dao.UserDao;
+
+public class UserService {
+
+	private UserDao userDao = null;
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public String getName(Integer id) {
+		String name = userDao.findNameById(id);
+		return name;
+	}
+
+	public String getEmail(Integer id) {
+		String email = userDao.findEmailById(id);
+		return email;
+	}
+
+	private boolean isUserActive(Integer userId) {
+		//logic
+		return true;
+	}
+	
+	public void doWork() {
+		//logic
+	}
+}
+-------------------------------------------------------------------------
+package com.ashokit.service;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
+import org.junit.Test;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.reflect.Whitebox;
+
+import com.ashokit.dao.UserDao;
+
+public class UserServiceTest {
+
+	@Test
+	public void test_getName() {
+		UserDao userDaoMock = PowerMockito.mock(UserDao.class);
+		when(userDaoMock.findNameById(101)).thenReturn("Ashok");
+		
+		UserService service = new UserService();
+		service.setUserDao(userDaoMock);
+
+		String name = service.getName(101);
+		assertNotNull(name);
+	}
+	
+	@Test
+	public void test_getEmail() {
+		UserDao userDaoMock = PowerMockito.mock(UserDao.class);
+		when(userDaoMock.findEmailById(101)).thenReturn("ashokitschool@gmail.com");
+		
+		UserService service = new UserService();
+		service.setUserDao(userDaoMock);
+		String email = service.getEmail(101);
+		assertNotNull(email);
+	}
+	
+	@Test
+	public void test_isActive() throws Exception {
+		UserService userService = new UserService();
+		Boolean isActive = (Boolean) Whitebox.invokeMethod(userService, "isUserActive", 101);
+		assertTrue(isActive);
+	}
+	
+	public void test_DoWork() {
+		UserService userService = PowerMockito.mock(UserService.class);
+		doNothing().when(userService).doWork();
+	}
+	
+}
+-----------------------------------------------------------------------
+
+
+
+https://www.softwaretestinghelp.com/mock-private-static-void-methods-mockito/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+Yesterday's session : Junit Introduction
+
+Today's session : Junit example
+------------------------------------------------
+
+-> JUnit is an open source framework
+
+-> Junit is used to perform Unit testing for java applications
+
+-> JUnit provided annotations to perform unit testing
+
+-> JUnit provided assertions to validate test results
+
+-> JUnit will generate test results report
+
+----------------------------------------------------------------------
+@Test annotation is used to represent method as unit test method
+
+--------------------------------------------------------------------
+
+-> In realtime for every business class one unit test class also will be created
+
+	DateUtils.java ---------------> DateUtilsTest.java
+
+	UserService.java --------------> UserServiceTest.java
+
+	UserDao.java ------------------> UserDaoTest.java
+
+
+-> To Execute all Unit test methods available in project we can use maven test goal.
+
+    Right click on project --> Run As --> Maven Test
+
+
+-> If we want to skip one unit test method then we can write @Ignore annotation at method level
+
+-> If we write @Ignore at class level, then complete class will be skipped
+
+============
+Mocking
+============
+Mocking is the process of creating substitute object for the real object
+			or
+Mocking is the process of creating alternate object for the real object
+
+-> Mock objects are used to perform Unit Testing
+
+-> Using Mock objects we can test our component in isolated manner
+
+-> To create Mock objects we will use Mock frameworks
+
+-> There are 2 types of Mock frameworks are available
+
+	1) Proxy Based Mocking (Easy Mock)
+	2) Bytecode manipulation based mocking (Power Mock)
+

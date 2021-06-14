@@ -1,0 +1,98 @@
+Last session : Power Mock Example
+Today's session : Code Coverage 
+
+------------------------------------
+-> Junit we are using to perform Unit Testing
+
+-> As part of Unit Testing we are using Mock objects
+
+-> To create Mock objects we are using Mock frameworks
+
+-> Mock Frameworks are divided into 2 types
+
+	1) Proxy Based (Easy Mock)
+	2) Byte Code Manipulation (Power Mock)
+
+-> By using Mock Objects we can perform Unit Testing in isolation manner
+
+-> When we are performing Unit testing for a class, if that class is having dependency with any other class/interface then we will mock dependent classes/interface.
+-------------------------------------------------------------------------
+
+What is Code Coverage?
+----------------------
+-> It is the process of identifying which lines of code is executed and which lines of code is not executed as part of Unit Testing.
+
+-> If we can identify lines of code which is not executed then we should perform unit testing for those lines also.
+
+-> With the help of code coverage we can improve unit test scenarios
+
+-> Industry bencmark is we should have 85% code coverage
+
+-> To generate code coverage report we will use Jacoco plugin
+
+-> If we add Jacoco plugin in pom.xml, after Unit test execution it will generate code coverage report in html format.
+
+
+-> Add below <build> section in pom.xml file
+
+
+-----------------------------------------------------------------------
+<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				
+				<configuration>
+					<excludes>
+						<exclude>com/ashokit/pojo/**</exclude>
+					</excludes>
+					
+				</configuration>
+				
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+--------------------------------------------------------------------------
+
+
+-> After adding jacoco plugin, right click on project and execute as Maven Test goal.
+
+-> Once Unit testing is completed, jacoco will generate report inside target folder
+
+	/target/site/jacoco/index.html file
+
+
+-> Entities, Model classes will be excluded from coverage.
+
+ex:<exclude>com/ashokit/pojo/**</exclude>
+					
+					
+
+
+
+
+
+
+
+
+
+
+
