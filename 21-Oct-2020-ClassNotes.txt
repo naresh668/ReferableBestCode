@@ -1,0 +1,122 @@
+Last session : 02-Project Code Review
+-------------------------------------
+Today's session : Reading data from YML file into Java Class
+------------------------------------------------------------
+
+-> In our application we have hard coded success and failure messages
+
+-> Hard Coding the message is not the recommended approach
+
+-> If we want to change any message, then we have to modify java program then we need to compile, package and deploy.
+
+-> Instead of harding messages in java classes we can read them from yml file
+
+-----------------application.yml file-------------------------------------
+server:
+  port: 9090
+app: 
+  welcomeMsg: Welcome To Ashok IT..!!
+  greetMsg: Good Morning..!!
+
+-------------------------------AppProperties.java----------------------------
+@Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties(prefix = "app")
+@Data
+public class AppProperties {
+
+	private String welcomeMsg;
+	private String greetMsg;
+
+}
+
+-----------------------------DemoRestController.java----------------------------
+@RestController
+public class DemoRestController {
+
+	@Autowired
+	private AppProperties appProps;
+
+	@GetMapping("/welcome")
+	public String getWelcomeMsg() {
+		String welcomeMsg = appProps.getWelcomeMsg();
+		return welcomeMsg;
+	}
+
+	@GetMapping("/greet")
+	public String greetMsg() {
+		String greetMsg = appProps.getGreetMsg();
+		return greetMsg;
+	}
+
+}
+---------------------------------------------------------------------------------
+
+-> In the above approach we are storing yml file properties into java class variables.
+
+-> Yml property key name and java class variable name should be same then yml property value will be stored to java class variable.
+
+Using Collection To Read Yml Properties
+---------------------------------------
+-> We can load yml file properties into java Map in the form of key-value pair
+
+----------------------------application.yml file-----------------------------
+server:
+  port: 9090
+app: 
+  messages:
+    welcomeMsg: Welcome To Ashok IT..!!
+    greetMsg: Good Morning..!!
+
+---------------------------AppProperties.java-----------------------------------
+@Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties(prefix = "app")
+@Data
+public class AppProperties {
+
+	private Map<String, String> messages = new HashMap<>();
+
+}
+
+--------------------------DemoRestController.java--------------------------------
+@RestController
+public class DemoRestController {
+
+	@Autowired
+	private AppProperties appProps;
+
+	@GetMapping("/welcome")
+	public String getWelcomeMsg() {
+		String welcomeMsg = appProps.getMessages().get("welcomeMsg");
+		return welcomeMsg;
+	}
+
+	@GetMapping("/greet")
+	public String greetMsg() {
+		String greetMsg = appProps.getMessages().get("greetMsg");
+		return greetMsg;
+	}
+
+}
+---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+* recoverPwd:"Recover Password Sended To Your Email,Please Verify Your Email And Login.<a href=\"index\">Log In Here </a>\""
+    notValidEmail:"Your Entered Email Not Registered With Us Please Register Here .<a href=\"register\">Register Here </a>\""*/
+
+
+
+
+
+
+
